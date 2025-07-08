@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Campus Cash - Create a Selling Offer</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="header" role="banner">
+    <div class="header-left" aria-label="Campus Cash Logo">Campus Cash</div>
+    <nav class="nav-links" aria-label="Primary navigation">
+      <a href="index.html" tabindex="0">Find Deals</a>
+      <a href="messages.html" tabindex="0">Messages</a>
+      <a href="map-view.html" tabindex="0">Map View</a>
+      <a href="post-offer.html" class="btn-post-listing" aria-label="Post Listing" tabindex="0">Post Listing</a>
+      <img
+        class="profile-pic"
+        src="https://i.pravatar.cc/40?u=profile"
+        alt="User profile"
+        loading="lazy"
+        width="34"
+        height="34"
+      />
+    </nav>
+  </header>
+
+  <main class="container" role="main" style="max-width: 600px;">
+    <h1 style="font-weight:700; margin-bottom:24px;">Create a Selling Offer</h1>
+
+    <form id="post-offer-form" novalidate>
+      <label for="amount-dba">Amount of DBA to Sell</label>
+      <input type="number" id="amount-dba" name="amount-dba" min="1" placeholder="$ Enter DBA amount" required />
+
+      <label for="asking-price">Asking Price (Cash)</label>
+      <input type="number" id="asking-price" name="asking-price" min="0" placeholder="$ Enter cash amount" required />
+
+      <label for="meeting-location">Preferred Meeting Location</label>
+      <select id="meeting-location" name="meeting-location" required>
+        <option value="" disabled selected>Select location</option>
+        <option value="novack">Novack</option>
+        <option value="hop">Hop</option>
+        <option value="thayer">Thayer</option>
+      </select>
+
+      <label for="available-from">Available Time Slots</label>
+      <div style="display:flex; gap:1rem; margin-bottom: 0.75rem;">
+        <input 
+          type="time" 
+          id="available-from" 
+          name="available-from" 
+          placeholder="From" 
+          style="flex: 1;" 
+          required 
+        />
+        <input 
+          type="time" 
+          id="available-to" 
+          name="available-to" 
+          placeholder="To" 
+          style="flex: 1;" 
+          required 
+        />
+      </div>
+
+      <label for="additional-notes">Additional Notes</label>
+      <textarea id="additional-notes" name="additional-notes" placeholder="Any additional information for buyers..." rows="3"></textarea>
+
+      <div style="margin-bottom: 1rem;">
+        <label><input type="checkbox" id="enable-location" name="enable-location" /> Enable location sharing for this offer</label>
+      </div>
+
+      <div style="display:flex; gap: 1rem; justify-content:flex-end; margin-bottom:1rem;">
+        <button type="reset" style="background:#f3f4f6; border:none; padding: 0.5rem 1rem; border-radius: 6px; cursor:pointer;">Cancel</button>
+        <button type="submit" style="background:#111827; color:white; border:none; padding: 0.5rem 1.5rem;border-radius: 6px; cursor:pointer;">Post Offer</button>
+      </div>
+    </form>
+
+    <div style="background:#f9fafb; padding: 1rem; border-radius: 8px; font-size: 0.85rem; color:#374151;">
+      <strong>Important Notes:</strong>
+      <ul style="margin: 0.5rem 0 0 1.25rem; padding: 0;">
+        <li>All transactions must be completed in person</li>
+        <li>Choose public locations for meetups</li>
+        <li>Verify buyers' student status before transaction</li>
+      </ul>
+    </div>
+  </main>
+
+  <footer role="contentinfo">
+    <div class="footer-container" aria-label="Footer">
+      <div class="footer-col">
+        <h4>DartDining</h4>
+        <p>The safe way to exchange dining dollars within the Dartmouth community.</p>
+      </div>
+      <div class="footer-col" aria-label="Quick Links">
+        <h4>Quick Links</h4>
+        <ul>
+          <li tabindex="0">About Us</li>
+          <li tabindex="0">Safety Guidelines</li>
+          <li tabindex="0">Terms of Service</li>
+        </ul>
+      </div>
+      <div class="footer-col" aria-label="Support">
+        <h4>Support</h4>
+        <ul>
+          <li tabindex="0">FAQ</li>
+          <li tabindex="0">Contact Us</li>
+          <li tabindex="0">Report an Issue</li>
+        </ul>
+      </div>
+      <div class="footer-col" aria-label="Connect">
+        <h4>Connect</h4>
+        <nav class="footer-social" aria-label="Social links">
+          <a href="https://twitter.com" aria-label="Twitter" target="_blank" rel="noopener noreferrer">
+            <!-- Twitter SVG icon -->
+            <svg width="20" height="20" fill="#94a3b8" viewBox="0 0 24 24" stroke="none">
+              <path d="M23 3a10.9 10.9 0 01-3.14.86 4.48 4.48 0 001.94-2.48 9.14 9.14 0 01-2.88 1.1 4.52 4.52 0 00-7.7 4.13A12.82 12.82 0 013 4.93a4.5 4.5 0 001.39 6.02 4.41 4.41 0 01-2.05-.57v.06a4.52 4.52 0 003.63 4.43 4.51 4.51 0 01-2.04.08 4.52 4.52 0 004.22 3.14A9.06 9.06 0 013 19.54 12.8 12.8 0 009.29 21c7.54 0 11.68-6.27 11.68-11.7 0-.18 0-.35-.01-.53A8.35 8.35 0 0023 3z"/>
+            </svg>
+          </a>
+          <a href="https://instagram.com" aria-label="Instagram" target="_blank" rel="noopener noreferrer">
+            <!-- Instagram SVG icon -->
+            <svg width="20" height="20" fill="#94a3b8" viewBox="0 0 24 24" stroke="none">
+              <path d="M7 2C4.243 2 2 4.243 2 7v10c0 2.757 2.243 5 5 5h10c2.757 0 5-2.243 5-5V7c0-2.757-2.243-5-5-5H7zM12 7a5 5 0 110 10 5 5 0 010-10zm6.5 1.79a1.2 1.2 0 11-2.4 0 1.2 1.2 0 012.4 0zM12 9a3 3 0 100 6 3 3 0 000-6z"/>
+            </svg>
+          </a>
+          <a href="https://facebook.com" aria-label="Facebook" target="_blank" rel="noopener noreferrer">
+            <!-- Facebook SVG icon -->
+            <svg width="20" height="20" fill="#94a3b8" viewBox="0 0 24 24" stroke="none">
+              <path d="M22 12c0-5.522-4.477-10-10-10S2 6.478 2 12c0 4.991 3.657 9.128 8.438 9.877v-6.987H7.898v-2.89h2.54V9.845c0-2.507 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.462h-1.26c-1.243 0-1.63.772-1.63 1.562v1.875h2.773l-.443 2.89h-2.33v6.987C18.343 21.128 22 16.991 22 12z"/>
+            </svg>
+          </a>
+        </nav>
+      </div>
+    </div>
+
+    <div class="footer-bottom">© 2025 Campus Cash. All rights reserved.</div>
+  </footer>
+
+  <script src="script-post-offer.js"></script>
+</body>
+</html>

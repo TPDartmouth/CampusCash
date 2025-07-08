@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Campus Cash - Map View</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* Some specific styles for map page, extend as needed */
+    main.container {
+      display: grid;
+      grid-template-columns: 320px 1fr 300px;
+      grid-gap: 1rem;
+      min-height: calc(100vh - 80px); /* header+footer approx 80px */
+      padding: 1rem 2rem 2rem 2rem;
+    }
+    .sidebar {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgb(0 0 0 / 0.08);
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .sidebar h2 {
+      margin: 0 0 1rem 0;
+      font-weight: 600;
+      font-size: 1.2rem;
+      color: #111827;
+    }
+    .search-input {
+      width: 100%;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      border: 1px solid #d1d5db;
+      font-size: 1rem;
+      margin-bottom: 0.5rem;
+    }
+    .location-list .location {
+      padding: 0.5rem 0.75rem;
+      border-radius: 6px;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: #374151;
+      border-bottom: 1px solid #e5e7eb;
+    }
+    .location-list .location:last-child {
+      border-bottom: none;
+    }
+    .map-container {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgb(0 0 0 / 0.1);
+      display: flex;
+      flex-direction: column;
+    }
+    iframe#map-iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      border-radius: 12px;
+      flex-grow: 1;
+    }
+    .chat-panel {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgb(0 0 0 / 0.1);
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      max-height: calc(100vh - 120px);
+    }
+    .chat-header {
+      font-weight: 700;
+      font-size: 1.1rem;
+      margin-bottom: 0.75rem;
+      color: #111827;
+    }
+    .chat-messages {
+      flex-grow: 1;
+      overflow-y: auto;
+      border: 1px solid #e5e7eb;
+      border-radius: 6px;
+      padding: 0.5rem;
+      background: #f9fafb;
+      margin-bottom: 0.75rem;
+    }
+    .chat-message {
+      margin: 0.25rem 0;
+      padding: 0.5rem 0.75rem;
+      max-width: 80%;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      line-height: 1.3;
+      word-wrap: break-word;
+      clear: both;
+      display: inline-block;
+    }
+    .chat-message.user {
+      background-color: #22c55e;
+      color: white;
+      float: right;
+      border-bottom-right-radius: 4px;
+    }
+    .chat-message.bot {
+      background-color: #e5e7eb;
+      color: #374151;
+      float: left;
+      border-bottom-left-radius: 4px;
+    }
+    .chat-input-container {
+      display: flex;
+      gap: 0.5rem;
+    }
+    .chat-input-container input {
+      flex-grow: 1;
+      padding: 0.5rem 0.75rem;
+      border-radius: 6px;
+      border: 1px solid #d1d5db;
+      font-size: 1rem;
+    }
+    .chat-input-container button {
+      background: #22c55e;
+      border: none;
+      padding: 0 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      color: white;
+      font-weight: 700;
+      font-size: 1rem;
+      transition: background 0.3s ease;
+    }
+    .chat-input-container button:hover {
+      background: #16a34a;
+    }
+    /* Responsive */
+    @media (max-width: 900px) {
+      main.container {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto auto;
+        height: auto;
+      }
+      .map-container,
+      .sidebar,
+      .chat-panel {
+        max-height: none;
+        height: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="header" role="banner">
+    <div class="header-left" aria-label="Campus Cash Logo">Campus Cash</div>
+    <nav class="nav-links" aria-label="Primary navigation">
+      <a href="index.html" tabindex="0">Find Deals</a>
+      <a href="messages.html" tabindex="0">Messages</a>
+      <a href="map-view.html" tabindex="0">Map View</a>
+      <a href="post-offer.html" class="btn-post-listing" aria-label="Post Listing" tabindex="0">Post Listing</a>
+      <img
+        class="profile-pic"
+        src="https://i.pravatar.cc/40?u=profile"
+        alt="User profile"
+        loading="lazy"
+        width="34"
+        height="34"
+      />
+    </nav>
+  </header>
+
+  <main class="container" role="main">
+    <aside class="sidebar" aria-label="Find Deals sidebar">
+      <h2>Find Deals</h2>
+      <input type="search" class="search-input" placeholder="Search locations..." aria-label="Search locations" id="location-search" />
+
+      <div class="location-list" id="location-list">
+        <div class="location" tabindex="0" data-name="novack">
+          Novack
+          <span>5 available sellers</span>
+        </div>
+        <div class="location" tabindex="0" data-name="hop">
+          Hop
+          <span>4 available sellers</span>
+        </div>
+      </div>
+    </aside>
+
+    <section class="map-container" aria-label="Map with offers">
+      <!-- Placeholder embedded map, replace or upgrade as needed -->
+      <iframe
+        id="map-iframe"
+        src="https://maps.google.com/maps?q=Dartmouth%20College&t=&z=15&ie=UTF8&iwloc=&output=embed"
+        title="Map of Dartmouth College with offers"
+        aria-hidden="false"
+      ></iframe>
+    </section>
+
+    <section class="chat-panel" aria-label="Chat panel">
+      <div class="chat-header" id="chat-header">Chat</div>
+      <div class="chat-messages" id="chat-messages" role="log" aria-live="polite"></div>
+      <form id="chat-form" class="chat-input-container" aria-label="Chat input form">
+        <input type="text" id="chat-input" placeholder="Type your message..." aria-label="Type your message" autocomplete="off" required />
+        <button type="submit" aria-label="Send message">&#9658;</button>
+      </form>
+    </section>
+  </main>
+
+  <footer role="contentinfo">
+    <div class="footer-container" aria-label="Footer">
+      <div class="footer-col">
+        <h4>DartDining</h4>
+        <p>The safe way to exchange dining dollars within the Dartmouth community.</p>
+      </div>
+      <div class="footer-col" aria-label="Quick Links">
+        <h4>Quick Links</h4>
+        <ul>
+          <li tabindex="0">About Us</li>
+          <li tabindex="0">Safety Guidelines</li>
+          <li tabindex="0">Terms of Service</li>
+        </ul>
+      </div>
+      <div class="footer-col" aria-label="Support">
+        <h4>Support</h4>
+        <ul>
+          <li tabindex="0">FAQ</li>
+          <li tabindex="0">Contact Us</li>
+          <li tabindex="0">Report an Issue</li>
+        </ul>
+      </div>
+      <div class="footer-col" aria-label="Connect">
+        <h4>Connect</h4>
+        <nav class="footer-social" aria-label="Social links">
+          <a href="https://twitter.com" aria-label="Twitter" target="_blank" rel="noopener noreferrer">
+            <!-- Twitter SVG icon -->
+            <svg width="20" height="20" fill="#94a3b8" viewBox="0 0 24 24" stroke="none">
+              <path d="M23 3a10.9 10.9 0 01-3.14.86 4.48 4.48 0 001.94-2.48 9.14 9.14 0 01-2.88 1.1 4.52 4.52 0 00-7.7 4.13A12.82 12.82 0 013 4.93a4.5 4.5 0 001.39 6.02 4.41 4.41 0 01-2.05-.57v.06a4.52 4.52 0 003.63 4.43 4.51 4.51 0 01-2.04.08 4.52 4.52 0 004.22 3.14A9.06 9.06 0 013 19.54 12.8 12.8 0 009.29 21c7.54 0 11.68-6.27 11.68-11.7 0-.18 0-.35-.01-.53A8.35 8.35 0 0023 3z"/>
+            </svg>
+          </a>
+          <a href="https://instagram.com" aria-label="Instagram" target="_blank" rel="noopener noreferrer">
+            <!-- Instagram SVG icon -->
+            <svg width="20" height="20" fill="#94a3b8" viewBox="0 0 24 24" stroke="none">
+              <path d="M7 2C4.243 2 2 4.243 2 7v10c0 2.757 2.243 5 5 5h10c2.757 0 5-2.243 5-5V7c0-2.757-2.243-5-5-5H7zM12 7a5 5 0 110 10 5 5 0 010-10zm6.5 1.79a1.2 1.2 0 11-2.4 0 1.2 1.2 0 012.4 0zM12 9a3 3 0 100 6 3 3 0 000-6z"/>
+            </svg>
+          </a>
+          <a href="https://facebook.com" aria-label="Facebook" target="_blank" rel="noopener noreferrer">
+            <!-- Facebook SVG icon -->
+            <svg width="20" height="20" fill="#94a3b8" viewBox="0 0 24 24" stroke="none">
+              <path d="M22 12c0-5.522-4.477-10-10-10S2 6.478 2 12c0 4.991 3.657 9.128 8.438 9.877v-6.987H7.898v-2.89h2.54V9.845c0-2.507 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.462h-1.26c-1.243 0-1.63.772-1.63 1.562v1.875h2.773l-.443 2.89h-2.33v6.987C18.343 21.128 22 16.991 22 12z"/>
+            </svg>
+          </a>
+        </nav>
+      </div>
+    </div>
+
+    <div class="footer-bottom">© 2025 Campus Cash. All rights reserved.</div>
+  </footer>
+
+  <script src="script-map-view.js"></script>
+</body>
+</html>
